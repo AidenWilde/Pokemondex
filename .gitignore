@@ -1,0 +1,15 @@
+
+obj/Pokemondex.csproj.nuget.dgspec.json
+obj/Pokemondex.csproj.nuget.g.props
+obj/project.assets.json
+obj/project.nuget.cache
+obj/Release/net6.0/Pokemondex.csproj.FileListAbsolute.txt
+obj/Release/net6.0/PublishOutputs.525be369eb.txt
+obj/Release/net6.0/PubTmp/Pokemondex.Parameters.xml
+obj/Release/net6.0/PubTmp/Pokemondex.SourceManifest.xml
+obj/Release/net6.0/staticwebassets.build.json
+obj/Release/net6.0/staticwebassets.publish.json
+Properties/PublishProfiles/Pokemondex - Web Deploy.pubxml
+Properties/PublishProfiles/Pokemondex - Web Deploy.pubxml.user
+Properties/ServiceDependencies/Pokemondex - Web Deploy/profile.arm.json
+wwwroot/js/site.js
