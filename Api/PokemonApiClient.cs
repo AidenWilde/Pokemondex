@@ -26,7 +26,7 @@ namespace Pokemondex.Api
 
         public GetPokemonResponse Get(string pokemonName)
         {
-            var getPokemonRoute = $"pokemon/{pokemonName}";
+            var getPokemonRoute = $"pokemon/{pokemonName.ToLower()}";
             try
             {
                 var getPokemonResponse = new GetPokemonResponse();

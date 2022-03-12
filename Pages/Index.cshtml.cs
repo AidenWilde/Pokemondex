@@ -1,22 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pokemondex.Api;
+using Pokemondex.Data_transfer_objects;
 
 namespace Pokemondex.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly PokemonApiWrapper _pokemonApiWrapper;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public GetPokemonDTO Pokemon { get; set; } = null;
+
+        [BindProperty(SupportsGet = true)] //SupportsGet is opt-in because it can be insecure, verify user input before mapping elsewhere
+        public string SearchValue { get; set; }
+
+        public IndexModel()
         {
-            _logger = logger;
+            _pokemonApiWrapper = new PokemonApiWrapper();
+        }
+
+        public void OnPostSearch()
+        {
+            Pokemon = _pokemonApiWrapper.Get(SearchValue);
         }
 
         public void OnGet()
         {
-            //var pokemonWrapper = new PokemonApiWrapper();
-            //var pokemon = pokemonWrapper.Get();
         }
     }
 }

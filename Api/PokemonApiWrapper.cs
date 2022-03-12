@@ -5,7 +5,7 @@ namespace Pokemondex.Api
     public interface IPokemonApiWrapper
     {
         public List<GetPokemonDTO?> GetAll();
-        public GetPokemonDTO? Get();
+        public GetPokemonDTO? Get(string pokemonName);
     }
 
     public class PokemonApiWrapper : IPokemonApiWrapper
@@ -23,9 +23,9 @@ namespace Pokemondex.Api
             throw new NotImplementedException();
         }
 
-        public GetPokemonDTO? Get()
+        public GetPokemonDTO? Get(string pokemonName)
         {
-            var getPokemonResponse = _client.Get("pikachu");
+            var getPokemonResponse = _client.Get(pokemonName);
             if(getPokemonResponse is not null) 
                 return new GetPokemonDTO(getPokemonResponse);
 

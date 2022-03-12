@@ -6,5 +6,20 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <form method="post", asp-page="Index">
+        <p>
+            Search for pokemon: <input type="text" asp-for="SearchValue" />
+            <input type="submit" value="Search" asp-page-handler="Search"/>
+        </p>
+    </form>
+
+    @if(@Model.Pokemon is not null)
+    {
+        <div>
+            <p> @Model.Pokemon.Name </p>
+            <img src="@Model.Pokemon.SpriteUrl" />
+        </div>
+    }
+    
 </div>
