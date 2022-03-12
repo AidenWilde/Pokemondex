@@ -18,11 +18,13 @@
         public void GetAll()
         {
             // call off to client api to get all pokemon
+            throw new NotImplementedException();
         }
 
         public void Get()
         {
             // get specific pokemon information
+            throw new NotImplementedException();
         }
     }
 }
