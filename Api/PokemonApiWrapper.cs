@@ -4,7 +4,8 @@ namespace Pokemondex.Api
 {
     public interface IPokemonApiWrapper
     {
-        public List<GetPokemonDTO?> GetAll();
+        public GetAllPokemonDTO GetAll();
+        public GetAllPokemonDTO GetAllByPaginationUrl(string paginationUrl);
         public GetPokemonDTO? Get(string pokemonName);
     }
 
@@ -17,19 +18,31 @@ namespace Pokemondex.Api
             _client = new PokemonApiClient();
         }
 
-        public List<GetPokemonDTO?> GetAll()
+        public GetAllPokemonDTO GetAll()
         {
-            // call off to client api to get all pokemon
-            throw new NotImplementedException();
+            var getAllPokemonResponse = _client.GetAll();
+            if (getAllPokemonResponse is null)
+                return null;
+
+            return new GetAllPokemonDTO(getAllPokemonResponse);
+        }
+
+        public GetAllPokemonDTO GetAllByPaginationUrl(string paginationUrl)
+        {
+            var getAllPokemonResponse = _client.GetAllByPaginationUrl(paginationUrl);
+            if (getAllPokemonResponse is null)
+                return null;
+
+            return new GetAllPokemonDTO(getAllPokemonResponse);
         }
 
         public GetPokemonDTO? Get(string pokemonName)
         {
             var getPokemonResponse = _client.Get(pokemonName);
-            if(getPokemonResponse is not null) 
-                return new GetPokemonDTO(getPokemonResponse);
+            if(getPokemonResponse is null) 
+                return null;
 
-            return null;
+            return new GetPokemonDTO(getPokemonResponse);
         }
     }
 }

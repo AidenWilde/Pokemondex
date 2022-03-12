@@ -5,8 +5,9 @@ namespace Pokemondex.Api
 {
     public interface IPokemonApiClient 
     {
-        public List<GetPokemonResponse> GetAll();
-        public GetPokemonResponse Get(string pokemonName);
+        public GetAllPokemonResponse? GetAll();
+        public GetAllPokemonResponse? GetAllByPaginationUrl(string paginationUrl);
+        public GetPokemonResponse? Get(string pokemonName);
     }
 
     public class PokemonApiClient : IPokemonApiClient
@@ -19,12 +20,55 @@ namespace Pokemondex.Api
             _httpClient = new HttpClient();
         }
 
-        public List<GetPokemonResponse> GetAll()
+        public GetAllPokemonResponse? GetAll()
         {
-            return new();
+            var getPokemonRoute = $"pokemon/";
+
+            try
+            {
+                var getPokemonResponse = new GetAllPokemonResponse();
+                var response = _httpClient.GetAsync(_apiUrl + getPokemonRoute)
+                    .ContinueWith(taskResponse =>
+                    {
+                        var response = taskResponse.Result;
+                        var jsonString = response.Content.ReadAsStringAsync();
+                        jsonString.Wait();
+                        getPokemonResponse = JsonConvert.DeserializeObject<GetAllPokemonResponse>(jsonString.Result);
+                    });
+                response.Wait();
+
+                return getPokemonResponse;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public GetPokemonResponse Get(string pokemonName)
+        public GetAllPokemonResponse? GetAllByPaginationUrl(string paginationUrl)
+        {
+            try
+            {
+                var getPokemonResponse = new GetAllPokemonResponse();
+                var response = _httpClient.GetAsync(paginationUrl)
+                    .ContinueWith(taskResponse =>
+                    {
+                        var response = taskResponse.Result;
+                        var jsonString = response.Content.ReadAsStringAsync();
+                        jsonString.Wait();
+                        getPokemonResponse = JsonConvert.DeserializeObject<GetAllPokemonResponse>(jsonString.Result);
+                    });
+                response.Wait();
+
+                return getPokemonResponse;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public GetPokemonResponse? Get(string pokemonName)
         {
             var getPokemonRoute = $"pokemon/{pokemonName.ToLower()}";
             try
@@ -44,7 +88,7 @@ namespace Pokemondex.Api
             }
             catch(Exception ex)
             {
-                throw;
+                return null;
             }
         }
     }

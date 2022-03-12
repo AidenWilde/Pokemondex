@@ -9,7 +9,8 @@ namespace Pokemondex.Pages
     {
         private readonly PokemonApiWrapper _pokemonApiWrapper;
 
-        public GetPokemonDTO Pokemon { get; set; } = null;
+        public GetAllPokemonDTO PaginatedPokemon { get; set; } = null;
+        public GetPokemonDTO FilteredPokemon { get; set; } = null;
 
         [BindProperty(SupportsGet = true)] //SupportsGet is opt-in because it can be insecure, verify user input before mapping elsewhere
         public string SearchValue { get; set; }
@@ -21,11 +22,24 @@ namespace Pokemondex.Pages
 
         public void OnPostSearch()
         {
-            Pokemon = _pokemonApiWrapper.Get(SearchValue);
+            FilteredPokemon = _pokemonApiWrapper.Get(SearchValue);
+        }
+
+
+        public void OnPostNextPage()
+        {
+            var newPaginatedPokemon = _pokemonApiWrapper.GetAllByPaginationUrl(PaginatedPokemon.NextPaginationUrl);
+            PaginatedPokemon = newPaginatedPokemon;
+        }
+        public void OnPostPreviousPage()
+        {
+            var newPaginatedPokemon = _pokemonApiWrapper.GetAllByPaginationUrl(PaginatedPokemon.PreviousPaginationUrl);
+            PaginatedPokemon = newPaginatedPokemon;
         }
 
         public void OnGet()
         {
+            PaginatedPokemon = _pokemonApiWrapper.GetAll();
         }
     }
 }

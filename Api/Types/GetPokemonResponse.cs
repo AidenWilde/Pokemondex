@@ -3,7 +3,7 @@
 namespace Pokemondex.Api.Types
 {
     public class GetPokemonResponse
-    {// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+    {
         public class Ability2
         {
             public string name { get; set; }

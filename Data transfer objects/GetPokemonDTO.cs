@@ -2,7 +2,7 @@
 
 namespace Pokemondex.Data_transfer_objects
 {
-    public class GetPokemonDTO
+    public sealed class GetPokemonDTO
     {
         public string Name { get; set; }
         public string Url { get; set; }
