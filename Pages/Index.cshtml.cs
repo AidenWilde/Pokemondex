@@ -16,6 +16,8 @@ namespace Pokemondex.Pages
 
         [BindProperty(SupportsGet = true)] //SupportsGet is opt-in because it can be insecure, verify user input before mapping elsewhere
         public string SearchValue { get; set; }
+        [BindProperty(SupportsGet = true)] //SupportsGet is opt-in because it can be insecure, verify user input before mapping elsewhere
+        public string FilterValue { get; set; }
 
         static IndexModel()
         {
@@ -30,6 +32,12 @@ namespace Pokemondex.Pages
         public void OnPostSearch()
         {
             FilteredPokemon = _pokemonApiWrapper.Get(SearchValue);
+            _basicPokemonCache.UpdatePokemon(FilteredPokemon);
+        }
+        
+        public void OnPostFilter()
+        {
+            FilteredPokemon = _pokemonApiWrapper.Get(FilterValue);
             _basicPokemonCache.UpdatePokemon(FilteredPokemon);
         }
 

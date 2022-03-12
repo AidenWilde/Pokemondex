@@ -4,6 +4,26 @@
     ViewData["Title"] = "Pokemondex";
 }
 
+<style>
+    input {
+        margin-top: 0.5em;
+    }
+
+    .inline {
+        display: inline-block;
+    }
+
+    .next-page {
+        background-color: black;
+        margin-top: 0.5em
+    }
+
+    .previous-page {
+        background-color: black;
+        margin-top: 0.5em
+    }
+</style>
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     
@@ -18,21 +38,28 @@
     {
         @foreach(var pokemon in @Model.PaginatedPokemon.Pokemon)
         {
-            <p> @pokemon.Name </p> <!-- make these clickable, once clicked they call off to the url provided for more info / filter -->
-        }
-
-        if(@Model.PaginatedPokemon.NextPaginationUrl is not null)
-        {
             <form method="post", asp-page="Index">
-                <input type="submit" value="Next" asp-page-handler="NextPage"/>
+                <input type="submit" value="@pokemon.Name" asp-for="FilterValue" asp-page-handler="Filter"/>
             </form>
         }
         
         if(@Model.PaginatedPokemon.PreviousPaginationUrl is not null)
         {
-            <form method="post", asp-page="Index">
-                <input type="submit" value="Previous" asp-page-handler="PreviousPage"/>
-            </form>
+            <div class="previous-page inline">
+                <form method="post", asp-page="Index">
+                    <input type="submit" value="Previous" asp-page-handler="PreviousPage"/>
+                </form>
+            </div>
+            
+        }
+
+        if(@Model.PaginatedPokemon.NextPaginationUrl is not null)
+        {
+            <div class="next-page inline">
+                <form method="post", asp-page="Index">
+                    <input type="submit" value="Next" asp-page-handler="NextPage"/>
+                </form>
+            </div>
         }
     }
 

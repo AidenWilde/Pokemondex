@@ -70,6 +70,9 @@ namespace Pokemondex.Api
 
         public GetPokemonResponse? Get(string pokemonName)
         {
+            if (pokemonName.IsNullOrEmpty()) 
+                return null;
+
             var getPokemonRoute = $"pokemon/{pokemonName.ToLower()}";
             try
             {
@@ -90,6 +93,14 @@ namespace Pokemondex.Api
             {
                 return null;
             }
+        }
+    }
+
+    public static class ExtensionMethods
+    {
+        public static bool IsNullOrEmpty(this string value)
+        {
+            return value == null || value.Length == 0;
         }
     }
 }
