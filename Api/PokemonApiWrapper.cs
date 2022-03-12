@@ -1,9 +1,11 @@
-﻿namespace Pokemondex.Api
+﻿using Pokemondex.Data_transfer_objects;
+
+namespace Pokemondex.Api
 {
     public interface IPokemonApiWrapper
     {
-        public void GetAll();
-        public void Get();
+        public List<GetPokemonDTO?> GetAll();
+        public GetPokemonDTO? Get();
     }
 
     public class PokemonApiWrapper : IPokemonApiWrapper
@@ -15,16 +17,19 @@
             _client = new PokemonApiClient();
         }
 
-        public void GetAll()
+        public List<GetPokemonDTO?> GetAll()
         {
             // call off to client api to get all pokemon
             throw new NotImplementedException();
         }
 
-        public void Get()
+        public GetPokemonDTO? Get()
         {
-            // get specific pokemon information
-            throw new NotImplementedException();
+            var getPokemonResponse = _client.Get("pikachu");
+            if(getPokemonResponse is not null) 
+                return new GetPokemonDTO(getPokemonResponse);
+
+            return null;
         }
     }
 }

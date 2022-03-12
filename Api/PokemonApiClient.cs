@@ -1,28 +1,51 @@
-﻿namespace Pokemondex.Api
+﻿using Newtonsoft.Json;
+using Pokemondex.Api.Types;
+
+namespace Pokemondex.Api
 {
     public interface IPokemonApiClient 
     {
-        public void GetAll();
-        public void Get();
+        public List<GetPokemonResponse> GetAll();
+        public GetPokemonResponse Get(string pokemonName);
     }
 
     public class PokemonApiClient : IPokemonApiClient
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
+        private readonly string _apiUrl = "https://pokeapi.co/api/v2/"; 
 
-        public PokemonApiClient()
+        public PokemonApiClient() 
         {
             _httpClient = new HttpClient();
         }
 
-        public void Get()
+        public List<GetPokemonResponse> GetAll()
         {
-            throw new NotImplementedException();
+            return new();
         }
 
-        public void GetAll()
+        public GetPokemonResponse Get(string pokemonName)
         {
-            throw new NotImplementedException();
+            var getPokemonRoute = $"pokemon/{pokemonName}";
+            try
+            {
+                var getPokemonResponse = new GetPokemonResponse();
+                var response = _httpClient.GetAsync(_apiUrl + getPokemonRoute)
+                    .ContinueWith(taskResponse =>
+                    {
+                        var response = taskResponse.Result;
+                        var jsonString = response.Content.ReadAsStringAsync();
+                        jsonString.Wait();
+                        getPokemonResponse = JsonConvert.DeserializeObject<GetPokemonResponse>(jsonString.Result);
+                    });
+                response.Wait();
+
+                return getPokemonResponse;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

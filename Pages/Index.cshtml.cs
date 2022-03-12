@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Pokemondex.Api;
 
 namespace Pokemondex.Pages
 {
@@ -14,7 +15,8 @@ namespace Pokemondex.Pages
 
         public void OnGet()
         {
-            
+            //var pokemonWrapper = new PokemonApiWrapper();
+            //var pokemon = pokemonWrapper.Get();
         }
     }
 }
