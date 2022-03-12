@@ -7,6 +7,8 @@ namespace Pokemondex.Pages
 {
     public class IndexModel : PageModel
     {
+        private static readonly IBasicPokemonCache _basicPokemonCache;
+
         private readonly PokemonApiWrapper _pokemonApiWrapper;
 
         public GetAllPokemonDTO PaginatedPokemon { get; set; } = null;
@@ -14,6 +16,11 @@ namespace Pokemondex.Pages
 
         [BindProperty(SupportsGet = true)] //SupportsGet is opt-in because it can be insecure, verify user input before mapping elsewhere
         public string SearchValue { get; set; }
+
+        static IndexModel()
+        {
+            _basicPokemonCache = new BasicPokemonCache();
+        }
 
         public IndexModel()
         {
@@ -23,23 +30,24 @@ namespace Pokemondex.Pages
         public void OnPostSearch()
         {
             FilteredPokemon = _pokemonApiWrapper.Get(SearchValue);
+            _basicPokemonCache.UpdatePokemon(FilteredPokemon);
         }
-
 
         public void OnPostNextPage()
         {
-            var newPaginatedPokemon = _pokemonApiWrapper.GetAllByPaginationUrl(PaginatedPokemon.NextPaginationUrl);
-            PaginatedPokemon = newPaginatedPokemon;
+            PaginatedPokemon = _pokemonApiWrapper.GetAllByPaginationUrl(_basicPokemonCache.GetAll().NextPaginationUrl);
+            _basicPokemonCache.UpdateAllPokemon(PaginatedPokemon);
         }
         public void OnPostPreviousPage()
         {
-            var newPaginatedPokemon = _pokemonApiWrapper.GetAllByPaginationUrl(PaginatedPokemon.PreviousPaginationUrl);
-            PaginatedPokemon = newPaginatedPokemon;
+            PaginatedPokemon = _pokemonApiWrapper.GetAllByPaginationUrl(_basicPokemonCache.GetAll().PreviousPaginationUrl);
+            _basicPokemonCache.UpdateAllPokemon(PaginatedPokemon);
         }
 
         public void OnGet()
         {
             PaginatedPokemon = _pokemonApiWrapper.GetAll();
+            _basicPokemonCache.UpdateAllPokemon(PaginatedPokemon);
         }
     }
 }

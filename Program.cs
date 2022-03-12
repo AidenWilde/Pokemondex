@@ -1,7 +1,11 @@
+using Pokemondex.Pages;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IBasicPokemonCache, BasicPokemonCache>();
 
 var app = builder.Build();
 
